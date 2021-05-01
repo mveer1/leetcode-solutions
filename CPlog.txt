@@ -1,0 +1,2148 @@
+Kth Missing Positive Number
+Given an array arr of positive integers sorted in a strictly increasing order, and an integer k.
+Find the kth positive integer that is missing from this array.
+
+Input: arr = [2,3,4,7,11], k = 5
+Output: 9
+
+Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th missing positive integer is 9
+
+mysol:
+48ms
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        s = set()
+        for i in range(k+len(arr)+5):
+            s.add(i)
+        rem = s-set(arr)
+        rem = sorted(list(rem))
+        return rem[k]
+
+
+48ms
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        Val,i,count,Set = 0,1,0,set(arr)
+        while True:
+            if count == k:
+                return Val
+            if i not in Set:
+                Val = i
+                count += 1
+            i += 1  
+
+
+
+32ms
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        l, r = 0, len(arr) - 1
+        while l <= r:
+            m = (l + r) // 2
+            if k <= arr[m] - (m + 1):
+                r = m - 1
+            else:
+                l = m + 1
+        # return k - (arr[r] - (r + 1)) + arr[r]
+        return k + l
+
+
+
+
+
+
+
+Get Maximum in Generated Array
+
+You are given an integer n. An array nums of length n + 1 is generated in the following way:
+
+nums[0] = 0
+nums[1] = 1
+nums[2 * i] = nums[i] when 2 <= 2 * i <= n
+nums[2 * i + 1] = nums[i] + nums[i + 1] when 2 <= 2 * i + 1 <= n
+Return the maximum integer in the array nums​​​.
+
+Input: n = 3
+Output: 2
+Explanation: According to the given rules, the maximum between nums[0], nums[1], nums[2], and nums[3] is 2.
+
+mysol:
+class Solution:
+    def getMaximumGenerated(self, n: int) -> int:
+        nums = [0]*(n+1)
+        if n<=1:
+            return n
+        nums[0] = 0
+        nums[1] = 1
+        largest = -1
+        even = n//2+1
+        if n%2==0:
+            even = n//2
+        for i in range(even):
+            nums[2*i] = nums[i]
+            nums[2*i+1] = nums[i]+nums[i+1]
+            if nums[2*i]>nums[2*i+1]:
+                large = nums[2*i]
+            else:
+                large = nums[2*i+1]
+            if large>largest:
+                largest=large
+        return largest
+
+best:
+class Solution:
+    def getMaximumGenerated(self, n: int) -> int:
+        arr = []
+        cur_max = 0
+        for i in range(n + 1):
+            if i == 0 or i == 1:
+                arr.append(i)
+            elif i % 2 == 0:
+                arr.append(arr[i // 2])
+            else:
+                arr.append(arr[i // 2] + arr[i // 2 + 1])
+            if arr[i] > cur_max:
+                cur_max = arr[i]
+        return cur_max
+
+
+
+
+
+
+
+
+Check If Two String Arrays are Equivalent
+
+Given two string arrays word1 and word2, return true if the two arrays represent the same string, and false otherwise.
+A string is represented by an array if the array elements concatenated in order forms the string.
+
+Input: word1 = ["ab", "c"], word2 = ["a", "bc"]
+Output: true
+Explanation:
+word1 represents string "ab" + "c" -> "abc"
+word2 represents string "a" + "bc" -> "abc"
+The strings are the same, so return true.
+
+mysol (best);
+class Solution:
+    def arrayStringsAreEqual(self, word1: List[str], word2: List[str]) -> bool:
+        return "".join(word2)=="".join(word1)
+
+
+
+
+
+
+
+
+345. Reverse Vowels of a String
+Given a string s, reverse only all the vowels in the string and return it.
+The vowels are 'a', 'e', 'i', 'o', and 'u', and they can appear in both cases.
+
+Input: s = "hello"
+Output: "holle"
+
+mysol (5%)
+class Solution:
+    def swapinstr(self,s,i,j):
+        mid = s[i+1:j]
+        end = s[j+1:]
+        a = s[:i]+s[j]+mid+s[i]+end
+        return a
+    def reverseVowels(self, s: str) -> str:
+        a = s
+        vowel = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}
+        i,j = 0, len(s)-1
+        while i<j:
+            if not a[i] in vowel:
+                i += 1
+                continue
+            if not a[j] in vowel:
+                j -= 1
+                continue
+            a = self.swapinstr(a,i,j)
+            i += 1
+            j -= 1
+        return a
+
+
+better:
+class Solution:
+    def reverseVowels(self, s):
+        vowels = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}
+        L = list(s)
+        i = 0
+        j = len(L) - 1
+        while i < j:
+            while i < j and L[i] not in vowels:
+                i += 1
+            while j > i and L[j] not in vowels:
+                j -= 1
+            L[i], L[j] = L[j], L[i] 
+            i += 1
+            j -= 1
+        return ''.join(L) 
+
+
+better:
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+        vowels = set(['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'])
+        vowelList = []
+        for c in s:
+            if c in vowels:
+                vowelList.append(c)
+        ret = ""
+        for c in s:
+            if c in vowels:
+                ret += (vowelList.pop())
+            else:
+                ret += c
+        
+        return ret
+
+
+
+
+
+
+
+
+1704. Determine if String Halves Are Alike
+You are given a string s of even length. Split this string into two halves of equal lengths, and let a be the first half and b be the second half.
+
+Two strings are alike if they have the same number of vowels ('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'). Notice that s contains uppercase and lowercase letters.
+
+Return true if a and b are alike. Otherwise, return false.
+
+mysol(best):
+class Solution:
+    def halvesAreAlike(self, s: str) -> bool:
+        vowel = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}
+        flag = 0
+        for a in s[:len(s)//2]:
+            if a in vowel:
+                flag+=1
+        for b in s[len(s)//2:]:
+            if b in vowel:
+                flag-=1
+        return flag==0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1710. Maximum Units on a Truck
+Easy
+You are assigned to put some amount of boxes onto one truck. You are given a 2D array boxTypes, where boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
+You are also given an integer truckSize, which is the maximum number of boxes that can be put on the truck. You can choose any boxes to put on the truck as long as the number of boxes does not exceed truckSize.
+Return the maximum total number of units that can be put on the truck.
+
+mysol:
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        boxTypes.sort(key=lambda x: x[1], reverse=True)
+        size,i,result = 0,0,0
+        while (size < truckSize and i<len(boxTypes)):
+            numbox = boxTypes[i][0]
+            if (size+numbox)>truckSize:
+                numbox = truckSize - size
+            result = result + boxTypes[i][1]*numbox
+            size += boxTypes[i][0]
+            print(i,size)
+            i += 1
+        return result
+
+better sol:
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        box_dict = {}
+        for num, unit in boxTypes:
+            if unit not in box_dict.keys():
+                box_dict[unit] = num
+            else:
+                box_dict[unit] += num
+                
+        total_num = 0
+        result = 0
+        for unit in sorted(box_dict.keys(), reverse=True):
+            if total_num + box_dict[unit] > truckSize:
+                result += (truckSize - total_num) * unit
+                return result
+            
+            result += unit * box_dict[unit]
+            total_num += box_dict[unit]    
+        else:
+            return result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+You have n coins and you want to build a staircase with these coins. The staircase consists of k rows where the ith row has exactly i coins. The last row of the staircase may be incomplete.
+
+Given the integer n, return the number of complete rows of the staircase you will build.
+
+
+mysol: not good, 900ms
+class Solution:
+    def arrangeCoins(self, n: int) -> int:
+        res = 0
+        i = 1
+        while res<=n:
+            res += i
+            i+=1
+        return i-2
+
+
+Approach 1: Binary Search logn  40ms
+class Solution:
+    def arrangeCoins(self, n: int) -> int:
+        left, right = 0, n
+        while left <= right:
+            k = (right + left) // 2
+            curr = k * (k + 1) // 2
+            if curr == n:
+                return k
+            if n < curr:
+                right = k - 1
+            else:
+                left = k + 1
+        return right
+
+
+Approach 2: Math   O(1)   24ms
+k(k+1)≤2N
+find k by squaring both sides and:
+
+class Solution:
+    def arrangeCoins(self, n: int) -> int:
+        return (int)((2 * n + 0.25)**0.5 - 0.5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given an integer num, repeatedly add all its digits until the result has only one digit, and return it.
+
+num = 38
+Output: 2
+
+mysol:
+class Solution:
+    def addDigits(self, num: int) -> int:
+        string = str(num)
+        res = int(string)
+        while(res>9):
+            res = 0
+            for s in string:
+                res+=int(s)
+            string = str(res)
+        return res
+
+class Solution:
+    def addDigits(self, num: int) -> int:
+        if num == 0:
+            return 0
+        if num%9 == 0:
+            return 9
+        return num%9
+
+which is same as
+return 1 + (num - 1) % 9 if num else 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+We have two special characters. The first character can be represented by one bit 0. The second character can be represented by two bits (10 or 11).
+Now given a string represented by several bits. Return whether the last character must be a one-bit character or not. The given string will always end with a zero.
+
+bits = [1, 0, 0]
+Output: True
+Explanation: 
+The only way to decode it is two-bit character and one-bit character. So the last character is one-bit character.
+
+bits = [1, 1, 1, 0]
+Output: False
+Explanation: 
+The only way to decode it is two-bit character and two-bit character. So the last character is NOT one-bit character.
+
+mysol:
+class Solution:
+    def isOneBitCharacter(self, bits: List[int]) -> bool:
+        stack = []  #will use append so the end of the list is our head
+        for i in bits[:-1]:
+            if i==0 and len(stack)==0:
+                continue
+            elif i==0 and stack[-1]==1:
+                stack.remove(1)
+            elif i==1 and len(stack)==0:
+                stack.append(1)
+            elif i==1 and stack[-1]==1:
+                stack.remove(1)
+        if len(stack)==1:
+            return False
+        return True
+
+
+Approach #1: Increment Pointer
+
+When reading from the i-th position, if bits[i] == 0, the next character must have 1 bit; else if bits[i] == 1, the next character must have 2 bits. We increment our read-pointer i to the start of the next character appropriately. At the end, if our pointer is at bits.length - 1, then the last character must have a size of 1 bit.
+
+class Solution(object):
+    def isOneBitCharacter(self, bits):
+        i = 0
+        while i < len(bits) - 1:
+            i += bits[i] + 1
+        return i == len(bits) - 1
+
+Approach #2: Greedy [Accepted]
+The second-last 0 must be the end of a character (or, the beginning of the array if it doesn't exist). Looking from that position forward, the array bits takes the form [1, 1, ..., 1, 0] where there are zero or more 1's present in total. It is easy to show that the answer is true if and only if there are an even number of ones present.
+
+In our algorithm, we will find the second last zero by performing a linear scan from the right. We present two slightly different approaches below.
+
+class Solution(object):
+    def isOneBitCharacter(self, bits):
+        parity = bits.pop()
+        while bits and bits.pop(): parity ^= 1
+        return parity == 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given num, the array-form of an integer, and an integer k, return the array-form of the integer num + k.
+array form example, for num = 1321, the array form is [1,3,2,1].
+
+Example 1:
+Input: num = [1,2,0,0], k = 34
+Output: [1,2,3,4]
+Explanation: 1200 + 34 = 1234
+
+mysol:
+class Solution:
+    def addToArrayForm(self, A: List[int], K: int) -> List[int]:
+        return list(str(int("".join([str(c) for c in A]))+K))
+
+better: 
+class Solution(object):
+    def addToArrayForm(self, A, K):
+        A[-1] += K
+        for i in xrange(len(A) - 1, -1, -1):
+            carry, A[i] = divmod(A[i], 10)
+            if i: A[i-1] += carry
+        if carry:
+            A = map(int, str(carry)) + A
+        return A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+You are given a string s, return the number of segments in the string. (whitespaces make segments
+time space both o(n) 
+class Solution:
+    def countSegments(self, s):
+        return len(s.split())
+
+
+approach 2
+in place
+space O(1)
+
+class Solution:
+    def countSegments(self, s):
+        segment_count = 0
+
+        for i in range(len(s)):
+            if (i == 0 or s[i-1] == ' ') and s[i] != ' ':
+                segment_count += 1
+
+        return segment_count
+
+
+
+
+
+
+
+
+
+
+
+
+
+Write a function that reverses a string. The input string is given as an array of characters s.
+Example 1:
+
+Input: s = ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+
+mysol:
+s.reverse()
+
+Approach 1: Recursion, In-Place, O(N) Space
+
+Does in-place mean constant space complexity?
+No. By definition, an in-place algorithm is an algorithm which transforms input using no auxiliary data structure.
+The tricky part is that space is used by many actors, not only by data structures. The classical example is to use recursive function without any auxiliary data structures.
+Is it in-place? Yes.
+Is it constant space? No, because of recursion stack.
+
+class Solution:
+    def reverseString(self, s):
+        def helper(left, right):
+            if left < right:
+                s[left], s[right] = s[right], s[left]
+                helper(left + 1, right - 1)
+
+        helper(0, len(s) - 1)
+
+
+
+Approach 2: Two Pointers, Iteration, O(1) Space
+class Solution:
+    def reverseString(self, s):
+        left, right = 0, len(s) - 1
+        while left < right:
+            s[left], s[right] = s[right], s[left]
+            left, right = left + 1, right - 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Find the Duplicate Number
+Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.
+There is only one repeated number in nums, return this repeated number.
+mysol:
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        dic={}
+        for num in nums:
+            if num in dic:
+                return num
+            else:
+                dic[num]=0
+
+
+Approach 2: Set
+class Solution:
+    def findDuplicate(self, nums):
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return num
+            seen.add(num)
+
+
+Approach 3: Floyd's Tortoise and Hare (Cycle Detection)
+class Solution:
+    def findDuplicate(self, nums):
+        # Find the intersection point of the two runners.
+        tortoise = hare = nums[0]
+        while True:
+            tortoise = nums[tortoise]
+            hare = nums[nums[hare]]
+            if tortoise == hare:
+                break
+        
+        # Find the "entrance" to the cycle.
+        tortoise = nums[0]
+        while tortoise != hare:
+            tortoise = nums[tortoise]
+            hare = nums[hare]
+        
+        return hare
+
+
+
+
+
+
+
+
+
+
+
+
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+
+my sol: 
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        prev = None
+        p = head
+        while p is not None:
+            nex = p.next
+            p.next = prev
+
+            prev = p
+            p = nex
+        
+        return prev
+
+
+Approach #2 (Recursive) 
+public ListNode reverseList(ListNode head) {
+    if (head == null || head.next == null) return head;
+    ListNode p = reverseList(head.next);
+    head.next.next = head;
+    head.next = null;
+    return p;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Two Sum II - Input array is sorted
+Given an array of integers numbers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.
+
+Input: numbers = [2,7,11,15], target = 9
+Output: [1,2]
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        dic = dict()
+        for i,number in enumerate(numbers):
+            if number in dic:
+                return [dic[number], i+1]
+            dic[target - number] = i +1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Linked List Cycle II
+Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:          
+        slow = fast = head
+        if slow == None or slow.next == None:
+            return None
+        
+        while(fast != None and fast.next != None):
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                len_rem = 0
+                p = head
+                while p!=slow:
+                    len_rem+=1
+                    p = p.next
+                    slow = slow.next
+            
+                #pass slow to a funciton which uses it to find start of the list.
+                p=head
+                for _ in range(len_rem):
+                    p = p.next
+                return p
+        return None
+
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        slow = fast = node = head
+        
+        # Figure out if there's a cycle and first-intersection
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
+            if slow is fast: break
+        else:
+            return None
+        
+        # Find cycle entrance
+        while node is not slow:
+            node, slow = node.next, slow.next
+        return node
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mahavir: Linked List Cycle I
+Return true if there is a cycle in the linked list. Otherwise, return false.
+
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+
+Input: head = [1,2], pos = 0
+Output: true
+
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        slow = fast = head
+        if slow == None:
+            return False    
+        if slow.next == None:   #only one node or no node at all
+            return False
+        
+        while (fast != None and fast.next != None):
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+Follow up: Could you implement a solution with a linear runtime complexity and without using extra memory?
+
+Input: nums = [4,1,2,1,2]
+Output: 4
+
+math
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        return 2*sum(set(nums))-sum(nums)
+
+hashtable
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        dic = {}
+        for num in nums:
+            if num in dic:
+                dic[num] = 0
+            else:
+                dic[num] = 1        
+        for k in dic:
+            if dic.get(k):
+                return k
+
+best:
+in bit manipulation
+We can XOR all bits together to find the unique number.
+
+class Solution(object):
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        a = 0
+        for i in nums:
+            a ^= i
+        return a
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
+
+    def deleteDuplicates(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        temp=101
+        a=ListNode()
+        if head:
+            a=head
+            a=head.next
+            b=ListNode()
+            b=head
+            while a:
+                if a.val==b.val:
+                    b.next=a.next
+                    a=a.next
+                else:
+                    b=b.next
+                    a=a.next
+            return head
+        else:
+            return head
+
+mysol: 
+class Solution:
+    def delete(self,n):
+        if n.next is None:
+            return
+        n.next = n.next.next
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if head is None:
+            return
+        prev = head
+        p = head.next
+        
+        while(p is not None):
+            if p.val == prev.val:
+                self.delete(prev)     #deletes p only, but we pass a element of left
+                p = p.next
+            else:
+                prev = p
+                p = p.next
+            
+        return head
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given a non-negative integer x, compute and return the square root of x
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        if x<1:
+            return x
+        g=x/6
+        for i in range(18):
+            r=((x/g) + g)/2
+            g=r
+        return int(r)
+
+
+
+
+
+
+
+
+
+
+
+
+
+You are *climbing a staircase*. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+Example 1:
+
+mysolution
+import math
+def nCr(n,r):
+    f = math.factorial
+    return f(n) / f(r) / f(n-r)
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        i=2
+        res=0
+        while( n-2*i >= 0):
+            res+= nCr(n-i, i) # (n-i) C (i)
+            i+=1
+        return int(n+res)
+
+brute force 2^n
+public class Solution {
+    public int climbStairs(int n) {
+        return climb_Stairs(0, n);
+    }
+    public int climb_Stairs(int i, int n) {
+        if (i > n) {
+            return 0;
+        }
+        if (i == n) {
+            return 1;
+        }
+        return climb_Stairs(i + 1, n) + climb_Stairs(i + 2, n);
+    }
+}
+
+
+Approach 2: Recursion with Memoization  (O(n)) 
+public class Solution {
+    public int climbStairs(int n) {
+        int memo[] = new int[n + 1];
+        return climb_Stairs(0, n, memo);
+    }
+    public int climb_Stairs(int i, int n, int memo[]) {
+        if (i > n) {
+            return 0;
+        }
+        if (i == n) {
+            return 1;
+        }
+        if (memo[i] > 0) {
+            return memo[i];
+        }
+        memo[i] = climb_Stairs(i + 1, n, memo) + climb_Stairs(i + 2, n, memo);
+        return memo[i];
+    }
+}
+
+Approach 3: Dynamic Programming    (O(n))
+One can reach ith step in one of the two ways:
+   1. Taking a single step from (i−1)th step.
+
+   2. Taking a step of 2 from (i-2)th step.
+
+public class Solution {
+    public int climbStairs(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+
+
+Approach 4: Fibonacci Number  O(n) but space is O(1)
+public class Solution {
+    public int climbStairs(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        int first = 1;
+        int second = 2;
+        for (int i = 3; i <= n; i++) {
+            int third = first + second;
+            first = second;
+            second = third;
+        }
+        return second;
+    }
+}
+
+
+
+approach 5: Binets Method  time O(logn) and space constt
+This is an interesting solution which uses matrix multiplication to obtain the nth Fibonacci Number. 
+
+python: 
+class Solution(object): 
+       def climbStairs(self, n):
+        q = [[1, 1], [1, 0]]
+        res = self.matPow(q, n)
+        return res[0][0]
+  
+    def matPow(self, a, n):
+        ret = [[1, 0], [0, 1]]
+        while n:
+            if n & 1 == 1:
+                ret = self.matMult(ret, a)
+            n = n >> 1
+            a = self.matMult(a, a)
+        return ret
+      
+    def matMult(self, a, b):
+        c = [[0 for x in range(2)] for z in range(2)]
+        for i in range(2):
+            for j in range(2):
+                c[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j]
+        return c
+
+java, official solution 
+ public class Solution {
+    public int climbStairs(int n) {
+        int[][] q = {{1, 1}, {1, 0}};
+        int[][] res = pow(q, n);
+        return res[0][0];
+    }
+    public int[][] pow(int[][] a, int n) {
+        int[][] ret = {{1, 0}, {0, 1}};
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                ret = multiply(ret, a);
+            }
+            n >>= 1;
+            a = multiply(a, a);
+        }
+        return ret;
+    }
+    public int[][] multiply(int[][] a, int[][] b) {
+        int[][] c = new int[2][2];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                c[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j];
+            }
+        }
+        return c;
+    }
+}
+
+
+
+Approach 6: Fibonacci Formula O(logn), O(1)
+
+public class Solution {
+    public int climbStairs(int n) {
+        double sqrt5=Math.sqrt(5);
+        double fibn=Math.pow((1+sqrt5)/2,n+1)-Math.pow((1-sqrt5)/2,n+1);
+        return (int)(fibn/sqrt5);
+    }
+}
+
+python: 
+import math
+sqrt5=math.sqrt(5)
+fibn=math.pow((1+sqrt5)/2,n+1)-math.pow((1-sqrt5)/2,n+1)
+return int(fibn/sqrt5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given two binary strings a and b, return their sum as a binary string.
+Example 1:
+
+Input: a = "11", b = "1"
+Output: "100"
+
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        carry=0
+        result=""
+        if len(a)<=len(b):
+            a="0"*(len(b)-len(a))+a
+        else:
+            b="0"*(len(a)-len(b))+b
+        
+        for i,j in zip(a[::-1], b[::-1]):
+            if int(i)+int(j)+carry==0:
+                result+=str(0)
+                carry=0
+            elif int(i)+int(j)+carry==1:
+                result+=str(1)
+                carry=0
+            elif int(i)+int(j)+carry==2:
+                result+=str(0)
+                carry=1
+            else:
+                result+=str(1)
+                carry=1
+        result+=str(carry)
+        return str(int(result[::-1]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given a non-empty array of decimal digits representing a non-negative integer, increment one to the integer.
+The digits are stored such that the most significant digit is at the head of the list, and each element in the array contains a single digit.
+You may assume the integer does not contain any leading zero, except the number 0 itself.
+
+Example 1:
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+
+mysol: 32ms
+class Solution:
+    def plusOne(self, digits: List[int]) -> List[int]:
+        i=len(digits)-1
+        while(True):
+            if digits[i]!=9:
+                digits[i]+=1
+                return digits
+            else:
+                digits[i]=0
+                if i==0:
+                    digits.insert(0,1)
+                    return digits
+                i-=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given a roman numeral, convert it to an integer.
+
+class Solution:
+def romanToInt(self, s: str) -> int:
+total = 0
+dic = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000}
+
+    prev = 0
+    curr = 0
+    total = 0
+    for i in range(len(s)):
+        curr = dic[s[i]]
+        if curr > prev:
+            total = total + curr - 2* prev
+        else:
+            total = total + curr
+        prev=curr
+    return total
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given an integer x, return true if x is palindrome integer.
+
+An integer is a palindrome when it reads the same backward as forward. For example, 121 is palindrome while 123 is not.
+
+Approach 1: Revert half of the number
+
+44ms
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        return str(x)==str(x)[::-1]
+
+Algorithm
+
+First of all we should take care of some edge cases. All negative numbers are not palindrome, for example: -123 is not a palindrome since the '-' does not equal to '3'. So we can return false for all negative numbers.
+
+Now let's think about how to revert the last half of the number. For number 1221, if we do 1221 % 10, we get the last digit 1, to get the second to the last digit, we need to remove the last digit from 1221, we could do so by dividing it by 10, 1221 / 10 = 122. Then we can get the last digit again by doing a modulus by 10, 122 % 10 = 2, and if we multiply the last digit by 10 and add the second last digit, 1 * 10 + 2 = 12, it gives us the reverted number we want. Continuing this process would give us the reverted number with more digits.
+
+Now the question is, how do we know that we've reached the half of the number?
+
+Since we divided the number by 10, and multiplied the reversed number by 10, when the original number is less than the reversed number, it means we've processed half of the number digits.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.
+
+class Solution:
+    def reverse(self, x: int) -> int:
+        sx=str(x)
+        if sx[0]=="-":
+            sx="-"+ sx[::-1]
+            if int(sx[0:-1]) > 2147483647 or int(sx[0:-1]) < -2147483648:
+                return 0
+            else: 
+                return int(sx[0:-1])
+        if int(sx[::-1]) > 2147483647 or int(sx[::-1]) < -2147483648:
+            return 0
+        else:
+            return int(sx[::-1])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+# Hashtable: One-pass, Make with Find
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        n = len(nums)
+        dic = collections.defaultdict(int)
+        # O(N)
+        for i in range(n):
+            complement = target - nums[i]
+            if complement in dic:
+                return [i, dic[complement]]
+            dic[nums[i]] = i
+
+
+    # Hashtable: Two-pass, Make and Find
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        n = len(nums)
+        dic = collections.defaultdict(int)
+        # O(N)
+        for idx, num in enumerate(nums):
+            dic[num] = idx
+        
+        # O(N)
+        for i in range(n):
+            complement = target - nums[i]
+            if complement in dic:
+                if i != dic[complement]:
+                    return [i, dic[complement]]
+        
+    # Brute force, Loop through each element x
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        n = len(nums)
+        for i in range(n):
+            for j in range(i+1, n):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given a roman numeral, convert it to an integer.
+
+class Solution:
+def romanToInt(self, s: str) -> int:
+total = 0
+dic = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000}
+
+    prev = 0
+    curr = 0
+    total = 0
+    for i in range(len(s)):
+        curr = dic[s[i]]
+        if curr > prev:
+            total = total + curr - 2* prev
+        else:
+            total = total + curr
+        prev=curr
+    return total
+
+
+
+
+
+
+
+
+
+
+
+Merge two sorted linked lists and return it as a sorted list. The list should be made by splicing together the nodes of the first two lists
+Example 1:
+Input: l1 = [1,2,4], l2 = [1,3,4]
+Output: [1,1,2,3,4,4]
+
+my solution: 32ms
+
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        if l1 is None:
+            return l2
+        if l2 is None:
+            return l1
+        
+        p = l1
+        q = l2
+        
+        if p.val <= q.val:
+            ll1 = l1
+            p = p.next
+        else: 
+            ll1 = l2
+            q = q.next
+        
+        prev = ll1
+        
+        while(True):
+            
+            if p is None:
+                prev.next = q
+                break
+            elif q is None:
+                prev.next = p
+                break
+            
+            if p.val <= q.val:
+                prev.next = p
+                prev = p
+                p = p.next
+            else: 
+                prev.next = q
+                prev = q
+                q = q.next
+
+        return ll1
+
+
+def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+	if not l1:
+		return l2
+	if not l2:
+		return l1
+	l1ListNode = l1
+	l2ListNode = l2
+	resultNode = ListNode(0)
+	returnHead = resultNode
+	while l1ListNode and l2ListNode:
+		if l1ListNode.val <= l2ListNode.val:
+			resultNode.next = l1ListNode
+			l1ListNode = l1ListNode.next
+		else:
+			resultNode.next = l2ListNode
+			l2ListNode = l2ListNode.next
+		resultNode = resultNode.next
+
+
+	if not l1ListNode and l2ListNode:
+		resultNode.next = l2ListNode
+	elif not l2ListNode and l1ListNode:
+		resultNode.next = l1ListNode
+	return returnHead.next
+
+
+
+
+
+
+
+
+
+
+
+Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+Example 1:
+
+Input: nums = [1,3,5,6], target = 5
+Output: 2
+
+def searchInsert(self, nums: List[int], target: int) -> int:
+        if target <= nums[0]:
+            return 0
+        if target > nums[-1]:
+            return len(nums)
+        for i in range(1, len(nums)):
+            if nums[i] == target:
+                return i
+            if nums[i-1] < target < nums[i]:
+                return i
+
+
+Mysolution: 52ms
+class Solution:   
+ def searchInsert(self, nums: List[int], target: int) -> int:
+        for i,num in enumerate(nums):
+            if target<=num:
+                return i
+        return len(nums)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+Clarification:
+
+What should we return when needle is an empty string? This is a great question to ask during an interview.
+For the purpose of this problem, we will return 0 when needle is an empty string. This is consistent to C's strstr() and Java's indexOf().
+Example 1:
+
+Input: haystack = "hello", needle = "ll"
+Output: 2
+
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        len_h = len(haystack)
+        len_n = len(needle)
+        for i in range(len_h - len_n + 1):
+            if haystack[i:i+len_n]==needle:
+                return i
+        return -1
+
+
+
+
+
+
+
+
+
+
+
+Write a function to find the longest common prefix string amongst an array of strings.
+If there is no common prefix, return an empty string "".
+
+Example 1:
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+
+
+my solution:  32ms
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if len(strs)<1:
+            return ""
+        if len(strs)==1:
+            return strs[0]
+        for i,char in enumerate(strs[0]):
+            for s in strs:
+                try:
+                    if char != s[i]:
+                        return s[:i]
+                except:
+                    return s[:i]
+        return strs[0]
+
+
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs:
+            return ""
+        
+        strs.sort()
+        
+        result = []
+        
+        for idx, char in enumerate(strs[0]):
+            if char == strs[-1][idx]:
+                result.append(char)
+            else:
+                break
+        
+        return "".join(result)
+
+https://leetcode.com/problems/longest-common-prefix/solution/
+4 official solutions
+
+
+
+
+
+
+
+
+
+
+1480. Running Sum of 1d Array
+Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
+
+Return the running sum of nums.
+
+mysol
+class Solution:
+    def runningSum(self, nums: List[int]) -> List[int]:
+        rs = list()
+        cs = 0
+        for num in nums:
+            cs += num
+            rs.append(cs)
+        return rs
+
+class Solution:
+    def runningSum(self, nums: List[int]) -> List[int]:
+        output = []
+        output.append(nums[0])
+        for i in range(1, len(nums)):
+            output.append(nums[i] + output[i-1])
+        return output
+
+
+
+
+
+
+
+
+
+
+
+
+1437. Check If All 1's Are at Least Length K Places Away
+
+Given an array nums of 0s and 1s and an integer k, return True if all 1's are at least k places away from each other, otherwise return False.
+
+mysol 550ms:
+class Solution:
+    def kLengthApart(self, nums: List[int], k: int) -> bool:
+        stack = [-1]*k
+        for num in nums:
+            if num==1:
+                if len(stack)<k:
+                    return False
+                stack=[]
+            else:
+                stack.append(0)
+        return True
+
+
+best sol 530ms:
+
+Approach 1: One Pass + Count
+Let's first implement a pretty straightforward one-pass idea: to iterate over the array and count the number of zeros in-between the "neighbor" 1s. Each two neighbor 1s should have at least k zeros in-between. If it's not the case, return false.
+
+
+class Solution:
+    def kLengthApart(self, nums: List[int], k: int) -> bool:
+        # initialize the counter of zeros to k
+        # to pass the first 1 in nums
+        count = k
+        
+        for num in nums:
+            # if the current integer is 1
+            if num == 1:
+                # check that number of zeros in-between 1s
+                # is greater than or equal to k
+                if count < k:
+                    return False
+                # reinitialize counter
+                count = 0
+            # if the current integer is 0
+            else:
+                # increase the counter
+                count += 1
+                
+        return True
+
+
+other sol 900ms:
+Approach 2: Bit Manipulation
+This approach would be more suitable for the Facebook variation of this problem, when the input is not a binary array but an integer.
+
+In this situation, the problem could be solved with the bitwise trick to remove trailing zeros in the binary representation:
+
+# remove trailing zeros
+while x & 1 == 0:
+    x = x >> 1
+
+
+Algorithm
+
+1. Convert binary array into integer x. Note that this conversion always works fine in Python where there is no limit on the value of integers. In Java, the usage of this approach is limited by the integer capacity.
+
+2. Consider the base cases: return true if x == 0 or k == 0.
+
+3 .Remove trailing zeros in the binary representation of x. That ensures that the last bit of x is 1-bit.
+
+4. While x is greater than 1:
+
+	Remove trailing 1-bit with the right shift: x >>= 1.
+
+	Remove trailing zeros one by one, and count them using counter count. The number of zeros in-between 1-bits should be greater or equal to k. Hence, return false if count < k.
+
+5. We're here because all 1-bits are separated by more than k zeros. Return true.
+
+
+
+class Solution:
+    def kLengthApart(self, nums: List[int], k: int) -> bool:
+        # convert binary array into int
+        x = 0
+        for num in nums:
+            x = (x << 1) | num
+        
+        # base case
+        if x == 0 or k == 0:
+            return True
+        
+        # remove trailing zeros
+        while x & 1 == 0:
+            x = x >> 1
+        
+        while x != 1:
+            # remove trailing 1-bit
+            x = x >> 1
+            
+            # count trailing zeros
+            count = 0
+            while x & 1 == 0:
+                x = x >> 1
+                count += 1
+                
+            # number of zeros in-between 1-bits
+            # should be greater than or equal to k
+            if count < k:
+                return False
+        
+        return True
+
+
+
+all three time O(N) and const space
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1446. Consecutive Characters
+Given a string s, the power of the string is the maximum length of a non-empty substring that contains only one unique character.
+Return the power of the string.
+ 
+Input: s = "abbcccddddeeeeedcba"
+Output: 5
+Explanation: The substring "eeeee" is of length 5 with the character 'e' only.
+
+mysol (best ithink):
+class Solution:
+    def maxPower(self, s: str) -> int:
+        currpower = 1
+        largest = 1
+        for i in range(1,len(s)):
+            if s[i]==s[i-1]:
+                currpower+=1
+            else:
+                currpower = 1
+            if currpower>largest:
+                largest=currpower
+        return largest
+
+official sol:
+Approach #1: One Pass
+class Solution:
+    def maxPower(self, s: str) -> int:
+        count = 0
+        max_count = 0
+        previous = None
+        for c in s:
+            if c == previous:
+                # if same as previous one, increase the count
+                count += 1
+            else:
+                # else, reset the count
+                previous = c
+                count = 1
+            max_count = max(max_count, count)
+        return max_count
+
+
+
+
+similar questions
+674. Longest Continuous Increasing Subsequence
+
+Given an unsorted array of integers nums, return the length of the longest continuous increasing subsequence (i.e. subarray). The subsequence must be strictly increasing.
+
+A continuous increasing subsequence is defined by two indices l and r (l < r) such that it is [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] and for each l <= i < r, nums[i] < nums[i + 1].
+
+
+mysol 93%:
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        if len(nums)<=1:
+            return len(nums)
+        curcis = 1
+        longest = 1
+        for i in range(1,len(nums)):
+            if nums[i]>nums[i-1]:
+                curcis+=1
+            else:
+                curcis =1
+            if curcis>longest:
+                longest=curcis
+        return longest
+
+
+
+
+official sol:
+class Solution(object):
+    def findLengthOfLCIS(self, nums):
+        ans = anchor = 0
+        for i in range(len(nums)):
+            if i and nums[i-1] >= nums[i]: anchor = i
+            ans = max(ans, i - anchor + 1)
+        return ans
+
+
+
+
+
+
+
+
+
+
+
+1337. The K Weakest Rows in a Matrix
+
+You are given an m x n binary matrix mat of 1's (representing soldiers) and 0's (representing civilians). The soldiers are positioned in front of the civilians. That is, all the 1's will appear to the left of all the 0's in each row.
+
+A row i is weaker than a row j if one of the following is true:
+
+The number of soldiers in row i is less than the number of soldiers in row j.
+Both rows have the same number of soldiers and i < j.
+Return the indices of the k weakest rows in the matrix ordered from weakest to strongest.
+
+Example 1:
+Input: mat = 
+[[1,1,0,0,0],
+ [1,1,1,1,0],
+ [1,0,0,0,0],
+ [1,1,0,0,0],
+ [1,1,1,1,1]], 
+k = 3
+Output: [2,0,3]
+Explanation: 
+The number of soldiers in each row is: 
+- Row 0: 2 
+- Row 1: 4 
+- Row 2: 1 
+- Row 3: 2 
+- Row 4: 5 
+The rows ordered from weakest to strongest are [2,0,3,1,4].
+
+
+
+mysol 90%:
+class Solution:
+    def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
+        sumlist = []
+        
+        for i,row in enumerate(mat):
+            sumlist.append([sum(row),i])
+        
+        sumlist.sort(key= lambda x:x[0])
+        return [row[1] for row in sumlist[:k]]
+
+
+
+100%
+class Solution:
+    def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
+        d = {}
+        for i in range(len(mat)):
+            d[i] = sum(mat[i])
+        
+        return sorted(d, key=d.get)[:k]
+
+
+
+
+
+
+
+
+1394. Find Lucky Integer in an Array
+Given an array of integers arr, a lucky integer is an integer which has a frequency in the array equal to its value.
+
+Return a lucky integer in the array. If there are multiple lucky integers return the largest of them. If there is no lucky integer return -1.
+
+Example 2:
+Input: arr = [1,2,2,3,3,3]
+Output: 3
+
+
+mysol 87%:
+class Solution:
+    def findLucky(self, arr: List[int]) -> int:
+        currnum = 1
+        longest = 1
+        number  = 0
+        longestnum = 0
+        arr.sort()
+        arr.append(-1)
+        for i in range(1,len(arr)):
+            # print("start:", arr[i],i)
+            if arr[i]==arr[i-1]:
+                currnum+=1
+                # print("updated currnum to", currnum)
+            else:
+                if currnum == arr[i-1]:
+                    # print("found lucky number",currnum)
+                    if longestnum<currnum:
+                        # print("updating longestnum")
+                        longestnum= currnum
+                # print("resetting currnum to 1")
+                currnum =1
+            if currnum>longest:
+                longest=currnum
+        if longestnum==0:
+            return -1
+        return longestnum
+
+
+other:
+from collections import defaultdict
+
+class Solution:
+    def findLucky(self, arr: List[int]) -> int:
+        counter_dict = defaultdict(int)
+        for num in arr:
+            counter_dict[num] += 1
+        counter_dict[-1] = -1
+        return max(num for num, frequency in counter_dict.items() if num == frequency)
+
+
+other:
+from collections import defaultdict
+
+class Solution:
+    def findLucky(self, arr: List[int]) -> int:
+        counts = defaultdict(int)
+        for n in arr:
+            counts[n] += 1
+            
+        luckies = [n for n in counts.keys() if counts[n]==n]
+        luckies.append(-1)
+        
+        lucky = max(luckies)
+        return lucky
+
+
+
+other:
+from collections import Counter
+
+class Solution:
+    def findLucky(self, arr: List[int]) -> int:
+        counts = Counter(arr)
+        return max([k for k in counts if counts[k] == k], default=-1)
+
+all are good.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1290. Convert Binary Number in a Linked List to Integer
+Return the decimal value of the number in the linked list.
+
+
+mysol:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def getDecimalValue(self, head: ListNode) -> int:
+        p = head
+        l = []
+        binary = 0
+        while p is not None:
+            l.append(p.val)
+            p = p.next
+        leng = len(l)
+        for i in l:
+            binary += (2**(leng-1))*i
+            leng -= 1
+        return binary
+
+
+official sol:
+better:
+Approach 1: Binary Representation
+class Solution:
+    def getDecimalValue(self, head: ListNode) -> int:
+        num = head.val
+        while head.next:
+            num = num * 2 + head.next.val
+            head = head.next
+        return num
+
+
+better:
+Approach 2: Bit Manipulation
+class Solution:
+    def getDecimalValue(self, head: ListNode) -> int:
+        num = head.val
+        while head.next:
+            num = (num << 1) | head.next.val
+            head = head.next
+        return num
+
+both time O(N) and const space
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1342. Number of Steps to Reduce a Number to Zero
+Given a non-negative integer num, return the number of steps to reduce it to zero. If the current number is even, you have to divide it by 2, otherwise, you have to subtract 1 from it.
+
+mysol: best
+class Solution:
+    def numberOfSteps(self, num: int) -> int:
+        steps=0
+        while num!=0:
+            if num%2==0:
+                num = num/2
+                steps+=1
+            else:
+                num -=1
+                steps+=1
+        return steps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
