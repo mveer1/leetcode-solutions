@@ -2433,3 +2433,186 @@ return False
 
 
 
+
+
+
+
+
+1844. Replace All Digits with Characters
+You are given a 0-indexed string s that has lowercase English letters in its even indices and digits in its odd indices.
+
+There is a function shift(c, x), where c is a character and x is a digit, that returns the xth character after c.
+
+For example, shift('a', 5) = 'f' and shift('x', 0) = 'x'.
+For every odd index i, you want to replace the digit s[i] with shift(s[i-1], s[i]).
+
+mysol 99.4%:
+class Solution:
+    def shift(self, char:str, x: int):
+        return chr(ord(char)+x)
+    
+    def replaceDigits(self, s: str) -> str:
+        # shift(char, x) returns xth character after char
+        lis = [i for i in s]
+        for i in range(1, len(lis), 2):
+            lis[i] = self.shift(lis[i-1], int(lis[i]))
+        return ''.join(lis)
+
+
+
+
+
+
+
+
+
+
+
+20. Valid Parentheses
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+
+
+mysol 86%:
+class Solution:
+    def match(self, bracket):
+        if bracket == ")":
+            return "("
+        elif bracket == "}":
+            return "{"
+        elif bracket == "]":
+            return "["
+        
+    def isValid(self, s: str) -> bool:
+        stack = []
+        for brac in s:
+            if brac=="(" or brac=="[" or brac=="{": 
+                stack.append(brac)
+                            
+            elif (brac==")" or brac=="]" or brac=="}"):
+                if len(stack)==0:
+                    return False
+                elif self.match(brac) == stack[-1]:
+                    stack.pop()
+                else:
+                    return False
+        if not len(stack)==0:
+            return False
+        return True
+
+
+official sol time same syntax better and simple:
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+
+        # The stack to keep track of opening brackets.
+        stack = []
+
+        # Hash map for keeping track of mappings. This keeps the code very clean.
+        # Also makes adding more types of parenthesis easier
+        mapping = {")": "(", "}": "{", "]": "["}
+
+        # For every bracket in the expression.
+        for char in s:
+
+            # If the character is an closing bracket
+            if char in mapping:
+
+                # Pop the topmost element from the stack, if it is non empty
+                # Otherwise assign a dummy value of '#' to the top_element variable
+                top_element = stack.pop() if stack else '#'
+
+                # The mapping for the opening bracket in our hash and the top
+                # element of the stack don't match, return False
+                if mapping[char] != top_element:
+                    return False
+            else:
+                # We have an opening bracket, simply push it onto the stack.
+                stack.append(char)
+
+        return not stack
+
+
+
+other sol:
+def isValid(self, s):
+    bracket_map = {"(": ")", "[": "]",  "{": "}"}
+    open_par = set(["(", "[", "{"])
+    stack = []
+    for i in s:
+        if i in open_par:
+            stack.append(i)
+        elif stack and i == bracket_map[stack[-1]]:
+                stack.pop()
+        else:
+            return False
+    return stack == []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+53. Maximum Subarray
+Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+
+
+mysol:
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        ans=[]
+        ans.append(nums[0])
+        for i in range(1,len(nums)):
+            ans.append(max(nums[i],ans[i-1]+nums[i]))
+        
+        return max(ans)
+
+
+best:
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        """
+Kadane's algorithm: At every index, see if we get better result by adding the element to the current sequence or starting a new sequence.
+nums = [-2,1,-3,4,-1,2,1,-5,4]
+current sequence: [-2], current sum = -2
+Do we get better result by adding 1 to sequence: [-2, 1] = -1
+OR do we get better result by starting sequence at 1: [1] = 1
+Just take the max of those two as current sum, and update max sum as you go
+        """
+        curr_sum = max_sum = nums[0]
+        for num in nums[1:]:
+            curr_sum = max(curr_sum + num, num)
+            max_sum = max(max_sum, curr_sum)
+        return max_sum
+
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        maxE = 0
+        maxS = -math.inf
+        
+        for ele in nums:
+            maxE += ele
+            if maxS < maxE:
+                maxS = maxE
+            if maxE < 0:
+                maxE = 0
+        return maxS
