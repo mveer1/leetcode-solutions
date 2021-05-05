@@ -2616,3 +2616,302 @@ class Solution:
             if maxE < 0:
                 maxE = 0
         return maxS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1351. Count Negative Numbers in a Sorted Matrix
+
+Given a m x n matrix grid which is sorted in non-increasing order both row-wise and column-wise, return the number of negative numbers in grid.
+
+mysol 98%:
+class Solution:
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        m = len(grid)-1
+        n = len(grid[0])-1
+        j = n
+        i = 0
+        c = 0
+        while i<=m and j>=0:
+            if grid[i][j]<0:
+                # print("found at", i,j, "adding", m-i+1)
+                j -= 1
+                c += m-i+1
+            else:
+                i +=1
+        return c
+
+
+We can optimize more by using binary search to search the first the index in every row.
+Time: O(nlogm)
+Python solution:
+
+class Solution:
+    def firstIndex(self, arr):
+        start = 0
+        end = len(arr) -1
+        count = 0
+        location = -1
+        while start <= end:
+            mid = start + (end - start)//2
+            if (arr[mid] < 0):
+                location = mid
+                end = mid - 1;
+            else:
+                start = mid + 1
+        return location
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        row = len(grid)
+        col = len(grid[0])
+        i = 0
+        j = 0
+        count = 0
+        while i < row:
+            first = self.firstIndex(grid[i])
+            if first >= 0:
+                count += (col - first)
+                i += 1
+            else:
+                i += 1
+        return count
+
+
+another using binary search:
+class Solution(object):
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        def find_negative(row):
+            left, right = 0, len(row)
+            while left<right:
+                mid = left + (right-left) // 2
+                if row[mid]<0:
+                    right = mid
+                else:
+                    left = mid+1
+            return len(row)- left
+        
+        count = 0
+        for i in grid:
+            count += find_negative(i)
+        return(count)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+118. Pascal's Triangle
+Given an integer numRows, return the first numRows of Pascal's triangle.
+
+mysol:
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        tri = list()
+        tri.append([1])
+        rownum = 2
+        
+        while rownum<=numRows:
+            subtri = [1]
+            for i in range(1, rownum-1):
+                subtri.append(tri[-1][i-1]+tri[-1][i])
+            subtri.append(1)
+            tri.append(subtri)
+            rownum +=1
+        return tri
+
+#could be faster when assignment is used instead of append.
+
+class Solution:
+    def generate(self, num_rows):
+        triangle = []
+
+        for row_num in range(num_rows):
+            # The first and last row elements are always 1.
+            row = [None for _ in range(row_num+1)]
+            row[0], row[-1] = 1, 1
+
+            # Each triangle element is equal to the sum of the elements
+            # above-and-to-the-left and above-and-to-the-right.
+            for j in range(1, len(row)-1):
+                row[j] = triangle[row_num-1][j-1] + triangle[row_num-1][j]
+
+            triangle.append(row)
+
+        return triangle
+
+#both solutions, O(n^2) for time and space.
+
+
+
+
+
+
+
+
+
+
+
+
+119. Pascal's Triangle II
+Given an integer rowIndex, return the rowIndexth (0-indexed) row of the Pascal's triangle.
+
+mysol:
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        #direct approch would be and return the last row.
+        
+        #this approch does it in O(n) time
+        prev = 1
+        ans = [None]*(rowIndex+1)
+        ans[0] = 1
+        for i in range(1,rowIndex+1):            
+            curr = (prev * (rowIndex - i + 1)) // i
+            ans[i] = curr
+            prev = curr
+        return ans
+
+#could also be done more simply with append, this is faster ig
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+125. Valid Palindrome
+Given a string s, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+
+mysol:
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        #one way is stack, we first go to half the string, and append each char to a list. if the len is odd, we ingore the first element in second pass, (the later half pass) now, in the second half pass, we match every element. if doesnt matches or the stack is not empty by the end, its not a palindrome.  O(n)
+        #Other way two pointer approach, at any time is they dont match, return False. use a while loop
+        
+        #slicing the string would be better than stack approch ig. 
+        
+        # slicing:
+#         firsthalf = s[:len(s)//2]
+#         laterhalf = s[len(s)//2+1:]
+        
+        # but we have contraints here, we consider only alphanumeric, so this wont work. and string is immutable too.
+        
+        # now the stack feels better approach. 
+        # but lets try two pointer approch
+        i=0
+        j=len(s)-1
+        while i<=j:
+            if not s[i].isalnum():
+                i +=1
+                continue
+            if not s[j].isalnum():
+                j -=1
+                continue
+            if s[i].lower()==s[j].lower():
+                i +=1
+                j -=1
+            else:
+                return False
+        return True
+    
+    
+    
+    #thats a correct (tested) two pointer approach   57%, though, memory better than 94% though
+    # now lets check the stack approach
+    
+    #not working theres some problem with length/
+    
+#         stack = []
+#         leng = 0
+#         for c in s:
+#             if not c.isalnum():
+#                 continue
+#             leng+=1
+        
+#         for f in s[:leng//2]:
+#             if not f.isalnum():
+#                 continue
+#             stack.append(f)
+#         print(stack)
+        
+#         for e in s[leng//2+1:]:
+#             if not e.isalnum():
+#                 continue
+#             print("comparing:", e, ":with last of:", stack)
+#             if e.lower() == stack[-1].lower():
+#                 stack.pop()
+#             else:
+#                 return False
+#         print(stack)
+#         if not stack:
+#             return True
+#         return False
+
+
+
+best:
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        
+        l = len(s)
+        i = 0
+        j = l - 1
+        if not any(map(str.isalnum, s)): return True
+        while True:
+            while not s[i].isalnum():
+                i += 1
+                #if i == l: return True
+            while not s[j].isalnum():
+                j -= 1
+                #if j < 0: return True
+            if i >= j: return True
+            if not (s[i] == s[j] or s[i] == chr(ord(s[j]) ^ 32)): return False
+            i += 1
+            j -= 1
+            
+        return True
