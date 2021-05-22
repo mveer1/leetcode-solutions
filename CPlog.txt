@@ -3336,3 +3336,56 @@ class Solution:
                 break
             divisor *= 10
         return res
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	#rest
+	class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        sp = 0
+        tp = 0
+        
+        while sp<=len(s) or tp<=len(t):
+            print("start", s[sp], t[tp]) 
+            if s[sp+1]=='#':
+                sp+=1
+                print("skiping sp+1", s[sp], t[tp])
+            elif t[tp+1]=='#':
+                print("skiping tp+1", s[sp], t[tp])
+                tp+=1
+            elif s[sp]=='#':
+                print("skiping # in s", s[sp], t[tp])
+                sp+=1
+            elif t[tp]=='#':
+                print("skiping # in t", s[sp], t[tp])
+                tp+=1
+            else:
+                print("comp", s[sp], t[tp])
+                if s[sp]==t[tp]:
+                    sp +=1
+                    tp +=1
+                else:
+                    return False
+            print()
+        return True
