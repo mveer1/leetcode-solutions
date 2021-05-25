@@ -4,7 +4,6 @@ We have to go from lefttop to rightbottom of a Matrix
 and we can move only down and right.
 Input: Matrix
 Output: number of ways/paths
-
 '''
 
 t = int(input())
