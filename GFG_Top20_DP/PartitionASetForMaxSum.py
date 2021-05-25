@@ -140,3 +140,62 @@ if __name__ == "__main__" :
 
 # Time Complexity: O(N*Sum), where Sum represents sum of all array elements.
 # Auxiliary Space: O(N*Sum)
+# \\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# https://www.geeksforgeeks.org/partition-problem-dp-18/
+
+# check if this is done.

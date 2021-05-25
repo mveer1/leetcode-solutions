@@ -199,7 +199,7 @@ The idea is to follow the simple recursive solution, use a lookup table to avoid
 # Returns length of the
 # shortest supersequence of X and Y
  
-import numpy as np
+# import numpy as np
 def superSeq(X,Y,n,m,lookup):
      
     if m==0 or n==0:
