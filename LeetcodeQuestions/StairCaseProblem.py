@@ -17,7 +17,7 @@ class Solution:
             i+=1
         return int(n+res)
 
-# brute force 2^n
+"""# brute force 2^n
 public class Solution {
     public int climbStairs(int n) {
         return climb_Stairs(0, n);
@@ -93,15 +93,15 @@ public class Solution {
         return second;
     }
 }
+"""
 
-
-
+"""
 approach 5: Binets Method  time O(logn) and space constt
 This is an interesting solution which uses matrix multiplication to obtain the nth Fibonacci Number. 
-
-python: 
+"""
+# python: 
 class Solution(object): 
-       def climbStairs(self, n):
+    def climbStairs(self, n):
         q = [[1, 1], [1, 0]]
         res = self.matPow(q, n)
         return res[0][0]
@@ -121,7 +121,7 @@ class Solution(object):
             for j in range(2):
                 c[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j]
         return c
-
+"""
 java, official solution 
  public class Solution {
     public int climbStairs(int n) {
@@ -162,9 +162,10 @@ public class Solution {
         return (int)(fibn/sqrt5);
     }
 }
-
+"""
+n=1
 # python: 
 import math
 sqrt5=math.sqrt(5)
 fibn=math.pow((1+sqrt5)/2,n+1)-math.pow((1-sqrt5)/2,n+1)
-return int(fibn/sqrt5)
+# return int(fibn/sqrt5)
