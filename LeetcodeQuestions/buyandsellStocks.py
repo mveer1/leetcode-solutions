@@ -85,7 +85,7 @@ class Solution:
 
 # same aproach but less space, O(1) actually
 class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
+    def maxProfit(self, prices: list[int]) -> int:
         n = len(prices)
         if n<=1:
             return 0
@@ -104,4 +104,3 @@ class Solution:
             return 0
         return max_sum
 
-        
