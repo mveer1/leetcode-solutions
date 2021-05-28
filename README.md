@@ -1,3 +1,3 @@
 # leetcode-solutions
-### My own solutions for questions in Leetcode, mostly using Python
+### My solutions for(with) questions in Leetcode and Others, mostly using Python
 ---
