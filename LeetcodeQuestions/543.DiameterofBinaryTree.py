@@ -83,7 +83,7 @@ def diameter(root):
     return max(lheight + rheight + 1, max(ldiameter, rdiameter))
 
 # Time Complexity: O(n2)
- 
+
 
 
 
@@ -116,13 +116,44 @@ def diameterOpt(root, height):
     # height of left subtree and right subtree is obtained from lh and rh
     # and returned value of function is stored in ldiameter and rdiameter
 
-    ldiameter, rdiameter = diameterOpt(root.left, lh), diameterOpt(root.right, rh)
-    height.h = max(lh.h, rh.h) + 1
-    return max(lh.h + rh.h + 1, max(ldiameter, rdiameter))
- 
+        ldiameter, rdiameter = diameterOpt(root.left, lh), diameterOpt(root.right, rh)
+        height.h = max(lh.h, rh.h) + 1
+        return max(lh.h + rh.h + 1, max(ldiameter, rdiameter))
+    
 # function to calculate diameter of binary tree
 def diameter(root):
     height = Height()
     return diameterOpt(root, height)
 
 # Time Complexity: O(n)
+
+
+
+
+
+
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        
+        def helper(node):
+            if not node:
+                return 0
+            
+            left = helper(node.left)
+            right = helper(node.right)
+            
+            self.dia = max(self.dia, left + right)
+            
+            return max(left, right) + 1
+        
+        self.dia = 0
+        helper(root)
+        return self.dia
