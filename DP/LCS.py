@@ -1,19 +1,22 @@
 """
-p = 'BATD'
-q = 'ABACD'
-
-answer = 'BAD'
+LCS Problem Statement: Given two sequences, find the length of longest subsequence present in both of them. 
+A subsequence is a sequence that appears in the same relative order, but not necessarily contiguous.
+For example, “abc”, “abg”, “bdf”, “aeg”, ‘”acefg”, .. etc are subsequences of “abcdefg”.
 """
 
-"""Recursive solution
-REturning the lenght of the longest common subsequence
+"""
+p = 'BATD'
+q = 'ABACD'
+answer = 'BAD'
 
-Case 1: 
+Recursive solution: Returning the lenght of the longest common subsequence
+
+Case 1:
     p and q end with same chars p0  and q0 respectively
     return 1+LCS(P1, Q1)         #1 says the subsequence will end with p0/q0 
         
-        Consider the input strings “AGGTAB” and “GXTXAYB”. Last characters match for the strings. So length of LCS can be written as:
-        L(“AGGTAB”, “GXTXAYB”) = 1 + L(“AGGTA”, “GXTXAY”)
+        Consider the input strings “AGGTAB” and “GXTXAYB”. Last characters match for the strings.
+        So length of LCS can be written as:  L(“AGGTA'B'”, “GXTXAY'B'”) = 1 + L(“AGGTA''”, “GXTXAY''”)
 
 Case 2:
     p and q do not end with same chars, p0 and q0 are not same.
@@ -42,7 +45,7 @@ dp = [[-1 for l in range(n)] for k in range(m)]
 
 def LCSdp(P, Q, n, m):
 
-    if dp[n][m]!=-1:         #do we have the result already?
+    if dp[n][m]!=-1:       #do we have the result already, if yes then return em, if not continue below.
         return dp[n][m]
 
     if n==0 or m==0:
@@ -61,7 +64,7 @@ def LCSdp(P, Q, n, m):
 
 
 
-#Now Bottom UP Solution
+#Now Bottom UP Solution, without recursion.
 
 """
             m=0     m=1     m=2     m=3
@@ -70,28 +73,18 @@ def LCSdp(P, Q, n, m):
     n=2     0       1       2       2
 """
 
-""" FRom GFG:
-LCS Problem Statement: Given two sequences, find the length of longest subsequence present in both of them. 
-A subsequence is a sequence that appears in the same relative order, but not necessarily contiguous.
-For example, “abc”, “abg”, “bdf”, “aeg”, ‘”acefg”, .. etc are subsequences of “abcdefg”.
-"""
 
 def lcs(X , Y):
     m = len(X)
-    n = len(Y)
-  
-    # declaring the array for storing the dp values
+    n = len(Y)  
     L = [[-1 for i in range(n+1)] for j in range(m+1)]
-  
-    """Following steps build L[m+1][n+1] in bottom up fashion
-    Note: L[i][j] contains length of LCS of X[0..i-1]
-    and Y[0..j-1]"""
-    
+
+    # Note: L[i][j] contains length of LCS of X[0..i-1] and Y[0..j-1]
     for i in range(m+1):
         for j in range(n+1):
-            if i == 0 or j == 0 :
+            if i == 0 or j == 0:
                 L[i][j] = 0
-            elif X[i-1] == Y[j-1]:
+            elif X[i-1] == Y[j-1]:       #
                 L[i][j] = L[i-1][j-1]+1
             else:
                 L[i][j] = max(L[i-1][j] , L[i][j-1])
@@ -158,3 +151,41 @@ m = len(X)
 n = len(Y)
 lcsprint(X, Y, m, n)
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""inteview bit"""
+class Solution:
+# @param A : string
+# @param B : string
+# @return an integer
+    def solve(self, A, B):
+        def LCS(P,Q,n,m):
+            if dp[n][m]!=-1:
+                return dp[n][m]   
+            if n==0 or m==0:
+                result = 0
+            elif P[n-1] == Q[m-1]:
+                result = 1+LCS(P, Q, n-1, m-1)
+            else:
+                tmp1 = LCS(P, Q, n-1, m)
+                tmp2 = LCS(P, Q, n, m-1)
+                result = max(tmp1, tmp2)
+            dp[n][m] = result
+            return result
+        n = len(A)
+        m = len(B)
+        dp = [[-1 for _ in range(n+1)] for _ in range(m+1)]
+        return LCS(A, B, n, m)
