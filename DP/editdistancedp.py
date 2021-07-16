@@ -160,7 +160,7 @@ def minDis(s1, s2, n, m, dp) :
   # To check if the recursive tree
   # for given n & m has already been executed
     if(dp[n][m] != -1)  :
-        return dp[n][m];
+        return dp[n][m]
                    
   # If characters are equal, execute
   # recursive function for n-1, m-1   
@@ -197,7 +197,7 @@ def minDis(s1, s2, n, m, dp) :
 # Driver code
 str1 = "voldemort"
 str2 = "dumbledore"
-    
+		
 n = len(str1)
 m = len(str2)
 dp = [[-1 for i in range(m + 1)] for j in range(n + 1)]
