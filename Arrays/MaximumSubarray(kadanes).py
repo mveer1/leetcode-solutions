@@ -1,5 +1,6 @@
 # 53. Maximum Subarray
-# Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+# Given an integer array nums, find the contiguous subarray 
+# (containing at least one number) which has the largest sum and return its sum.
 
 
 # mysol:
@@ -9,7 +10,7 @@ class Solution:
         ans.append(nums[0])
         for i in range(1,len(nums)):
             ans.append(max(nums[i],ans[i-1]+nums[i]))
-        
+
         return max(ans)
 
 
@@ -29,6 +30,8 @@ Just take the max of those two as current sum, and update max sum as you go
             curr_sum = max(curr_sum + num, num)
             max_sum = max(max_sum, curr_sum)
         return max_sum
+
+
 
 
 import math

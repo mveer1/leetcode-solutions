@@ -1,6 +1,6 @@
 """
-n = 4   p = {1, 2, 5, 6}
-m = 8   w = {2, 3, 4, 5}
+    n = 4   p = {1, 2, 5, 6}
+    m = 8   w = {2, 3, 4, 5}
 
 answer x = {0, 1, 0, 1} or something like this
 """
@@ -17,10 +17,9 @@ w = [-1, 2, 3, 4, 5]
 
 def knapsack(n, C):   #n is pointer to the item where we are making our decision, C is capacity left
     #base case, n==0, C==0
-    print('else')
     if n==0 or C==0:
         result = 0
-    elif w[n]<C:     #current wait is larger, we cant put it there. so we move left.
+    elif w[n]<C:     #current weight is larger, we cant put it there. so we move left.
         result = knapsack(n-1, C)
     else:            #if not then will try both cases, putting it there and not putting it there.
         tmp1 = knapsack(n-1, C)                         #not putting it there
@@ -32,17 +31,19 @@ def knapsack(n, C):   #n is pointer to the item where we are making our decision
 #NOW THIS IS O(2^n)
 #there fore trying memoziation in here.
 
+
+
+
 n = 4
 DP = [[-1 for l in range(m+1)] for k in range(n+1)]
 
 def opknapsack(n, C):   #n is pointer to the item where we are making our decision, C is capacity left
     #base case, n==0, C==0
-    print('else')
     if DP[n][C]==-1:
         return DP[n][C]
     if n==0 or C==0:
         result = 0
-    elif w[n]<C:     #current wait is larger, we cant put it there. so we move left.
+    elif w[n]>C:     #current wait is larger, we cant put it there. so we move left.
         result = knapsack(n-1, C)
     else:            #if not then will try both cases, putting it there and not putting it there.
         tmp1 = knapsack(n-1, C)                         #not putting it there
@@ -59,7 +60,7 @@ def opknapsack(n, C):   #n is pointer to the item where we are making our decisi
 
 
 
-#again optimal code but from gfg, not not recursive but iterative
+#iterative
 val = [1, 2, 5, 6]
 W = 8   
 wt = [2, 3, 4, 5]
@@ -68,7 +69,6 @@ n = len(val)
 DP = [[0 for x in range(W + 1)] for x in range(n + 1)]
 
 def op2knapsack(W, wt, val, n):
- 
     # Build table K[][] in bottom up manner
     for i in range(n + 1):
         for w in range(W + 1):
@@ -78,7 +78,6 @@ def op2knapsack(W, wt, val, n):
                 DP[i][w] = max(val[i-1] + DP[i-1][w-wt[i-1]], DP[i-1][w])
             else:
                 DP[i][w] = DP[i-1][w]
- 
     return DP
 
 
@@ -107,6 +106,7 @@ def knapsack(wt, val, W, n):
     if wt[n-1] <= W:
         DP[n][W] = max(val[n-1] + knapsack(wt, val, W-wt[n-1], n-1), knapsack(wt, val, W, n-1))
         return DP[n][W]
+        
     elif wt[n-1] > W:
         DP[n][W] = knapsack(wt, val, W, n-1)
         return DP[n][W]

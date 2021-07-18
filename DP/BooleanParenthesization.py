@@ -2,25 +2,29 @@
 Difficulty Level : Expert
 
 Problem Statement:
-    Count the number of ways we can parenthesize the expression so that the value of expression evaluates to true.
+    Count the number of ways we can parenthesize the expression so that 
+    the value of expression evaluates to true.
 
 Examples:
 
 1.      Input: symbol[]    = {T, F, T}
             operator[]  = {^, &}
         Output: 2
+
         The given expression is "T ^ F & T", it evaluates true
         in two ways "((T ^ F) & T)" and "(T ^ (F & T))"
 
 2.      Input: symbol[]    = {T, F, F}
             operator[]  = {^, |}
         Output: 2
+
         The given expression is "T ^ F | F", it evaluates true
         in two ways "( (T ^ F) | F )" and "( T ^ (F | F) )". 
 
 3.      Input: symbol[]    = {T, T, F, T}
             operator[]  = {|, &, ^}
         Output: 4
+
         The given expression is "T | T & F ^ T", it evaluates true
         in 4 ways ((T|T)&(F^T)), (T|(T&(F^T))), (((T|T)&F)^T) 
         and (T|((T&F)^T)). 
@@ -67,9 +71,10 @@ F(i, i) = 0 if symbol[i] = 'T'
  
 def countParenth(symb, oper, n):
     F = [[0 for i in range(n + 1)]
-         for i in range(n + 1)]
+            for i in range(n + 1)]
+    
     T = [[0 for i in range(n + 1)]
-         for i in range(n + 1)]
+            for i in range(n + 1)]
  
     # Fill diaginal entries first
     # All diagonal entries in
@@ -138,31 +143,21 @@ print(countParenth(symbols, operators, n))
 # Time Complexity: O(n3) Auxiliary Space: O(n2)
 
 
+
 """ Approach 2: 
 We can also use recursive approach (Top Down dp), this approach uses memoization."""
 
-
-
 def parenthesis_count(Str, i, j, isTrue, dp) :
-     
-    if (i > j) :
-        return 0
+    if (i > j) : return 0
      
     if (i == j) :
+        if (isTrue == 1): return 1 if Str[i] == 'T' else 0
+        else: return 1 if Str[i] == 'F' else 0
      
-        if (isTrue == 1) :
-       
-            return 1 if Str[i] == 'T' else 0
-       
-        else :
-       
-            return 1 if Str[i] == 'F' else 0
-     
-    if (dp[i][j][isTrue] != -1) :
-        return dp[i][j][isTrue]
+    if (dp[i][j][isTrue] != -1): return dp[i][j][isTrue]
      
     temp_ans = 0
-     
+    
     for k in range(i + 1, j, 2) :
      
         if (dp[i][k - 1][1] != -1) :
