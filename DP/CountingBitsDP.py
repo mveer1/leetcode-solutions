@@ -40,13 +40,13 @@ def approach2(n):
 
 # O(N)
 def approach3(n):
-	res = []
 	res = [0]
 	for i in range(1,n+1):
+		print("h", i//2, i%2, res[i//2]+i%2)
 		res.append(res[i//2]+i%2)
 	return res
 
-N = 5
+N = 32
 print(approach1(N))
 print(approach2(N))
 print(approach3(N))
