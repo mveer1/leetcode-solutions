@@ -1,5 +1,13 @@
 # Given a set of n elements, find number of ways of partitioning it
-# {1,2,3}
+
+
+# Another problem that can be solved by Bell Numbers. 
+# A number is squarefree if it is not divisible by a perfect square other than 1. For example, 6 is a square free number but 12 is not as it is divisible by 4. 
+# Given a squarefree number x, find the number of different multiplicative partitions of x. 
+# The number of multiplicative partitions is Bell(n) where n is number of prime factors of x. 
+# For example x = 30, there are 3 prime factors of 2, 3 and 5. So the answer is Bell(3) which is 5. 
+# The 5 partitions are 1 x 30, 2 x15, 3 x 10, 5 x 6 and 2 x 3 x 5.# {1,2,3}
+
 
 # 1 2 3
 # 12 3
